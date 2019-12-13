@@ -6,5 +6,5 @@ type User struct {
 }
 
 func (this *User) GetTableName() string {
-	return "user"
+	return tablePrefix + "user"
 }

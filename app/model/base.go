@@ -8,7 +8,10 @@ import (
 	"github.com/gogf/gf/os/glog"
 )
 
-var db gdb.DB
+var (
+	db          gdb.DB
+	tablePrefix string
+)
 
 func init() {
 	db = g.DB()
@@ -16,6 +19,7 @@ func init() {
 	db.SetMaxConnLifetime(30)
 	db.SetMaxIdleConnCount(10)
 	db.SetMaxOpenConnCount(100)
+	tablePrefix = g.Config().GetString("setting.tablePrefix")
 }
 
 type IBase interface {
@@ -29,6 +33,7 @@ type option struct {
 	Limit   []int
 	GroupBy string
 	Data    interface{}
+	Count   bool
 }
 
 type ModOption func(option *option)
@@ -69,6 +74,12 @@ func WithData(data interface{}) ModOption {
 	}
 }
 
+func WithCount(count bool) ModOption {
+	return func(option *option) {
+		option.Count = count
+	}
+}
+
 func getOptions(modOptions ...ModOption) *option {
 	op := &option{}
 	for _, fn := range modOptions {
@@ -96,6 +107,7 @@ func FindAll(obj IBase, modOptions ...ModOption) (g.List, error) {
 	if op.GroupBy != "" {
 		safe = safe.GroupBy(op.GroupBy)
 	}
+
 	results, e := safe.Select()
 
 	if e != nil {
@@ -104,6 +116,25 @@ func FindAll(obj IBase, modOptions ...ModOption) (g.List, error) {
 	}
 
 	return results.List(), nil
+}
+
+func Count(obj IBase, modOptions ...ModOption) (int, error) {
+	safe := db.Table(obj.GetTableName()).Safe()
+	op := getOptions(modOptions...)
+	if op.Where != nil {
+		safe = safe.Where(op.Where)
+	}
+	if op.Order != "" {
+		safe = safe.OrderBy(op.Order)
+	}
+	if op.GroupBy != "" {
+		safe = safe.GroupBy(op.GroupBy)
+	}
+	i, e := safe.Count()
+	if e != nil {
+		return 0, e
+	}
+	return i, nil
 }
 
 func FindOne(obj IBase, modOptions ...ModOption) (g.Map, error) {

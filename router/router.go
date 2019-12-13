@@ -1,9 +1,9 @@
 package router
 
 import (
+	"gf-admin/app/middleware"
 	"gf-admin/app/module/admin"
 	"gf-admin/app/module/api"
-	"gf-admin/middleware"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 )
