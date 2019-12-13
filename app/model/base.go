@@ -69,16 +69,17 @@ func WithData(data interface{}) ModOption {
 	}
 }
 
-func getOptions(option *option, modOptions ...ModOption) *option {
+func getOptions(modOptions ...ModOption) *option {
+	op := &option{}
 	for _, fn := range modOptions {
-		fn(option)
+		fn(op)
 	}
-	return option
+	return op
 }
 
 func FindAll(obj IBase, modOptions ...ModOption) (g.List, error) {
 
-	op := getOptions(&option{}, modOptions...)
+	op := getOptions(modOptions...)
 	safe := db.Table(obj.GetTableName()).Safe()
 	if op.Field != "" {
 		safe = safe.Fields(op.Field)
@@ -106,7 +107,7 @@ func FindAll(obj IBase, modOptions ...ModOption) (g.List, error) {
 }
 
 func FindOne(obj IBase, modOptions ...ModOption) (g.Map, error) {
-	op := getOptions(&option{}, modOptions...)
+	op := getOptions(modOptions...)
 	safe := db.Table(obj.GetTableName()).Safe()
 	if op.Field != "" {
 		safe = safe.Fields(op.Field)
@@ -124,7 +125,7 @@ func FindOne(obj IBase, modOptions ...ModOption) (g.Map, error) {
 
 func Insert(obj IBase, modOptions ...ModOption) (int64, error) {
 	safe := db.Table(obj.GetTableName()).Safe()
-	op := getOptions(&option{}, modOptions...)
+	op := getOptions(modOptions...)
 	if op.Data != nil {
 		safe = safe.Data(op.Data)
 	}
@@ -141,7 +142,7 @@ func Insert(obj IBase, modOptions ...ModOption) (int64, error) {
 
 func Update(obj IBase, modOptions ...ModOption) (int64, error) {
 	safe := db.Table(obj.GetTableName()).Safe()
-	op := getOptions(&option{}, modOptions...)
+	op := getOptions(modOptions...)
 	if op.Data == nil {
 		return 0, errors.New("修改信息为空")
 	}

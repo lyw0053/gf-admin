@@ -1,6 +1,7 @@
 package router
 
 import (
+	"gf-admin/app/admin/index"
 	"gf-admin/app/api/cron"
 	"gf-admin/app/api/hello"
 	"gf-admin/app/api/user"
@@ -14,6 +15,9 @@ func init() {
 	g.Server().BindHandler("/", hello.Handler)
 
 	s := g.Server()
+	s.Group("/admin", func(g *ghttp.RouterGroup) {
+		g.ALL("/", new(index.Controller))
+	})
 	s.Group("/api", func(g *ghttp.RouterGroup) {
 		g.ALL("/user", new(user.Controller))
 		g.Middleware(middleware.Auth)
