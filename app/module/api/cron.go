@@ -1,4 +1,4 @@
-package cron
+package api
 
 import (
 	"github.com/gogf/gf/net/ghttp"
@@ -7,10 +7,10 @@ import (
 	"github.com/gogf/gf/os/gtime"
 )
 
-type Controller struct {
+type CronController struct {
 }
 
-func (this *Controller) Index(r *ghttp.Request) {
+func (c *CronController) Index(r *ghttp.Request) {
 	cronName := "myTestCron"
 	status := r.GetPostString("status", "start")
 
@@ -39,6 +39,6 @@ func (this *Controller) Index(r *ghttp.Request) {
 	}
 }
 
-func (this *Controller) Test(r *ghttp.Request) {
+func (c *CronController) Test(r *ghttp.Request) {
 	r.Response.Write("test")
 }

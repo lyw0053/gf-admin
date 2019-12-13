@@ -1,10 +1,8 @@
 package router
 
 import (
-	"gf-admin/app/admin/index"
-	"gf-admin/app/api/cron"
-	"gf-admin/app/api/hello"
-	"gf-admin/app/api/user"
+	"gf-admin/app/module/admin"
+	"gf-admin/app/module/api"
 	"gf-admin/middleware"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
@@ -12,15 +10,13 @@ import (
 
 // 统一路由注册.
 func init() {
-	g.Server().BindHandler("/", hello.Handler)
-
 	s := g.Server()
 	s.Group("/admin", func(g *ghttp.RouterGroup) {
-		g.ALL("/", new(index.Controller))
+		g.ALL("/", new(admin.IndexController))
+		g.ALL("/task", new(admin.TaskController))
 	})
 	s.Group("/api", func(g *ghttp.RouterGroup) {
-		g.ALL("/user", new(user.Controller))
 		g.Middleware(middleware.Auth)
-		g.ALL("/cron", new(cron.Controller))
+		g.ALL("/cron", new(api.CronController))
 	})
 }
