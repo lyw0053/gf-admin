@@ -12,6 +12,8 @@ import (
 func init() {
 	s := g.Server()
 	s.Group("/admin", func(g *ghttp.RouterGroup) {
+		g.ALL("/login", new(admin.LoginController))
+		g.Middleware(middleware.LoginCheck)
 		g.ALL("/", new(admin.IndexController))
 		g.ALL("/task", new(admin.TaskController))
 	})

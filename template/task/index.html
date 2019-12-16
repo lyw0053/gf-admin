@@ -1,4 +1,3 @@
-{{template "common/header"}}
 <div class="layuimini-container">
     <div class="layuimini-main">
 
@@ -90,6 +89,13 @@
         // 监听添加操作
         $(".data-add-btn").on("click", function () {
             layer.msg('添加数据');
+            var url = "/admin/task/add/";
+            var openid = layer.open({
+                type: 2,
+                title:"添加任务",
+                content:url
+            });
+            layer.full(openid)
         });
 
         // 监听删除操作
@@ -121,5 +127,3 @@
 <script>
 
 </script>
-
-{{template "common/footer"}}

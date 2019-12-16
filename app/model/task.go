@@ -12,6 +12,13 @@ type Task struct {
 	CronId  string     `orm:cron_id`
 }
 
+const (
+	//get
+	TASK_TYPE_GET = 1
+	//post
+	TASK_TYPE_POST = 2
+)
+
 func (this *Task) GetTableName() string {
 	return tablePrefix + "task"
 }
