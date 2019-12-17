@@ -109,9 +109,14 @@
         layuimini.init('/admin/init.json');
 
         $('.login-out').on("click", function () {
-            layer.msg('退出登录成功', function () {
-                window.location = '/page/login-1.html';
+            $.get("/admin/login/loginout/",function (rel) {
+                if(rel.code == 0){
+                    layer.msg(rel.msg,{time:1000}, function () {
+                        window.location = '/admin/';
+                    });
+                }
             });
+
         });
     });
 </script>

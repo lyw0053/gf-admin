@@ -100,7 +100,7 @@
             }
             $.post("/admin/login/login/",data,function (rel) {
                 if(rel.code == 0){
-                    layer.msg(rel.msg, function () {
+                    layer.msg(rel.msg,{time:1000}, function () {
                         window.location = '/admin/';
                     });
                 }else {
